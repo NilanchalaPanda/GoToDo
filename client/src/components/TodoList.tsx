@@ -16,7 +16,8 @@ const TodoList = () => {
     // API Fetching Function -
     queryFn: async () => {
       try {
-        const res = await fetch("http://localhost:5001/api/v1/todos");
+        const url = `${import.meta.env.VITE_BASE_URL}/todos`;
+        const res = await fetch(url);
         const data = await res.json();
 
         if (!res.ok) {

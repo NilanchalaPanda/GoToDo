@@ -2,10 +2,12 @@ import { Badge, Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Todo } from "./TodoList";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { BsDashCircleDotted } from "react-icons/bs";
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
+  const queryClient = useQueryClient();
   const { mutate: updateTodo, isPending: isUpdating } = useMutation({
     mutationKey: ["updateTodo"],
 
@@ -23,8 +25,38 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
           throw new Error(data.error || "Something went wrong while updating");
         }
       } catch (err) {
-        console.log("Error while updating -", err);
+        console.log("UpdatingError -", err);
       }
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
+  
+  const { mutate: deleteTodo, isPending: isDeleting } = useMutation({
+    mutationKey: ["deleteTodo"],
+
+    mutationFn: async () => {
+      try {
+        const url = `${import.meta.env.VITE_BASE_URL}/todos/${todo._id}`;
+        const res = await fetch(url, {
+          method: "DELETE",
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          toast.error("Something went wrong while updating");
+          throw new Error(data.error || "Something went wrong while deleting");
+        }
+      } catch (err) {
+        console.log("DeletingError -", err);
+      }
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 
@@ -62,11 +94,13 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
           cursor={"pointer"}
           onClick={() => updateTodo()}
         >
-          {!isUpdating && <FaCheckCircle size={20} />}
-          {isUpdating && <Spinner size={"sm"} />}
+          {!todo.completed && <BsDashCircleDotted size={20} />}
+          {todo.completed && isUpdating && <Spinner size={"sm"} />}
+          {todo.completed && !isUpdating && <FaCheckCircle size={20} />}
         </Box>
-        <Box color={"red.500"} cursor={"pointer"}>
-          <MdDelete size={25} />
+        <Box color={"red.500"} cursor={"pointer"} onClick={() => deleteTodo()}>
+          {!isDeleting && <MdDelete size={25} />}
+          {isDeleting && <Spinner size={"sm"} />}
         </Box>
       </Flex>
     </Flex>

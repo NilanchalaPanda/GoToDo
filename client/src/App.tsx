@@ -5,7 +5,7 @@ import TodoList from "./components/TodoList";
 
 function App() {
   return (
-    <Stack h="100vh">
+    <Stack h="100vh" mb="100px">
       <Navbar />
       <Container>
         <TodoForm />
