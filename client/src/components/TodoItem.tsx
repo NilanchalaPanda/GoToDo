@@ -5,6 +5,7 @@ import { Todo } from "./TodoList";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { BsDashCircleDotted } from "react-icons/bs";
+import { BASEURL } from "../App";
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
   const queryClient = useQueryClient();
@@ -14,7 +15,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
     mutationFn: async () => {
       if (todo.completed) toast.success("Already updated");
       try {
-        const url = `${import.meta.env.VITE_BASE_URL}/todos/${todo._id}`;
+        const url = `${BASEURL}/todos/${todo._id}`;
         const res = await fetch(url, {
           method: "PATCH",
         });
@@ -40,7 +41,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 
     mutationFn: async () => {
       try {
-        const url = `${import.meta.env.VITE_BASE_URL}/todos/${todo._id}`;
+        const url = `${BASEURL}/todos/${todo._id}`;
         const res = await fetch(url, {
           method: "DELETE",
         });

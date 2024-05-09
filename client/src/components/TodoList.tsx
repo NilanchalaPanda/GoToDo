@@ -2,6 +2,7 @@ import { Flex, Spinner, Stack, Text } from "@chakra-ui/react";
 import TodoItem from "./TodoItem";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { BASEURL } from "../App";
 
 export type Todo = {
   _id: number;
@@ -16,7 +17,7 @@ const TodoList = () => {
     // API Fetching Function -
     queryFn: async () => {
       try {
-        const url = `${import.meta.env.VITE_BASE_URL}/todos`;
+        const url = `${BASEURL}/todos`;
         const res = await fetch(url);
         const data = await res.json();
 

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdAdd } from "react-icons/io";
+import { BASEURL } from "../App";
 
 const TodoForm = () => {
   const [newTodo, setNewTodo] = useState("");
@@ -14,7 +15,7 @@ const TodoForm = () => {
     mutationFn: async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       try {
-        const url = `${import.meta.env.VITE_BASE_URL}/todos`;
+        const url = `${BASEURL}/todos`;
         const res = await fetch(url, {
           method: "POST",
           headers: {
