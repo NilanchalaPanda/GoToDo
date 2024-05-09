@@ -1,41 +1,36 @@
 import { Flex, Spinner, Stack, Text } from "@chakra-ui/react";
-import { useState } from "react";
 import TodoItem from "./TodoItem";
+import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+
+export type Todo = {
+  _id: number;
+  body: string;
+  completed: boolean;
+};
 
 const TodoList = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const todos = [
-    {
-      _id: 1,
-      body: "Buy groceries",
-      completed: true,
+  const { data: todos, isLoading } = useQuery<Todo[]>({
+    queryKey: ["todos"],
+
+    // API Fetching Function -
+    queryFn: async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/v1/todos");
+        const data = await res.json();
+
+        if (!res.ok) {
+          toast.error("Something went wrong!");
+          throw new Error(data.error || "Something went wrong!");
+        }
+
+        return data || [];
+      } catch (err) {
+        console.log("Error -", err);
+      }
     },
-    {
-      _id: 2,
-      body: "Walk the dog",
-      completed: false,
-    },
-    {
-      _id: 3,
-      body: "Do laundry",
-      completed: false,
-    },
-    {
-      _id: 4,
-      body: "Cook dinner",
-      completed: true,
-    },
-    {
-      _id: 5,
-      body: "Do Study",
-      completed: false,
-    },
-    {
-      _id: 6,
-      body: "Do DSA",
-      completed: true,
-    },
-  ];
+  });
+
   return (
     <>
       <Text
