@@ -23,7 +23,7 @@ const TodoList = () => {
 
         if (!res.ok) {
           toast.error("Something went wrong!");
-          throw new Error(data.error || "Something went wrong!");
+          throw new Error(data.Error || "Something went wrong!");
         }
 
         return data || [];

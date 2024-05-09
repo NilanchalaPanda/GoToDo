@@ -27,9 +27,9 @@ const TodoForm = () => {
         const data = await res.json();
 
         if (!res.ok) {
-          toast.error("Something went wrong while adding new Todo");
+          toast.error(data.Error);
           throw new Error(
-            data.error || "Something went wrong while adding new Todo"
+            data.Error || "Something went wrong while adding new Todo"
           );
         }
         setNewTodo("");

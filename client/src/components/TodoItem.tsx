@@ -23,7 +23,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 
         if (!res.ok) {
           toast.error("Something went wrong while updating");
-          throw new Error(data.error || "Something went wrong while updating");
+          throw new Error(data.Error || "Something went wrong while updating");
         }
       } catch (err) {
         console.log("UpdatingError -", err);
@@ -49,7 +49,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 
         if (!res.ok) {
           toast.error("Something went wrong while updating");
-          throw new Error(data.error || "Something went wrong while deleting");
+          throw new Error(data.Error || "Something went wrong while deleting");
         }
       } catch (err) {
         console.log("DeletingError -", err);
