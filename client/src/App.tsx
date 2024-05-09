@@ -7,7 +7,7 @@ import TodoList from "./components/TodoList";
 export const BASEURL =
   import.meta.env.MODE === "development"
     ? import.meta.env.VITE_BASE_URL
-    : "/api";
+    : "/api/v1";
 
 function App() {
   return (
